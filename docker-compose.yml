@@ -1,4 +1,26 @@
 services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      # Dentro de la red de compose, cada servicio se alcanza por su nombre.
+      DB_URL: jdbc:postgresql://postgres:5432/transactions
+      DB_USER: transactions
+      DB_PASSWORD: transactions
+      PROVIDER_BASE_URL: http://provider-mock:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      provider-mock:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 20s
+
   postgres:
     image: postgres:17-alpine
     environment:
