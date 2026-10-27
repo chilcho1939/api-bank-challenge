@@ -1,0 +1,18 @@
+{
+  "priority": 10,
+  "request": {
+    "method": "POST",
+    "url": "/provider/v1/execute"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "transactionId": "txn-{{randomValue length=8 type='ALPHANUMERIC'}}",
+      "status": "APPROVED",
+      "balance": 5500.00,
+      "executedAt": "{{now}}"
+    },
+    "transformers": ["response-template"]
+  }
+}
