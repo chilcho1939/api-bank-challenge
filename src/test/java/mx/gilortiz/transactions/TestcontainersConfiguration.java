@@ -9,10 +9,14 @@ import org.testcontainers.utility.DockerImageName;
 @TestConfiguration(proxyBeanMethods = false)
 class TestcontainersConfiguration {
 
-	@Bean
+    /**
+     * Misma imagen que docker-compose: los tests corren contra la versión de producción.
+     * Con ServiceConnection, Spring Boot lee la URL, el usuario y el password del contenedor y configure el datasource solo.
+     */
+    @Bean
 	@ServiceConnection
 	PostgreSQLContainer postgresContainer() {
-		return new PostgreSQLContainer(DockerImageName.parse("postgres:latest"));
+		return new PostgreSQLContainer(DockerImageName.parse("postgres:17-alpine"));
 	}
 
 }
