@@ -1,7 +1,10 @@
 package mx.gilortiz.transactions.transaction;
 
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 
+@Component
 public class TransactionRules {
 
     static final BigDecimal MINIMUM_AMOUNT = new BigDecimal("1.00");
