@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+
 @Service
 public class TransactionService {
 
@@ -56,6 +60,16 @@ public class TransactionService {
         log.info("Transacción {} ({} {} {}) terminó en {}", saved.getId(), saved.getType(),
                 saved.getAmount(), saved.getCurrency(), saved.getStatus());
         return saved;
+    }
+
+    /**
+     * Consulta paginada, de la más reciente a la más antigua.
+     * El id desempata cuando dos transacciones tienen el mismo createdAt,
+     * para que una fila no se repita ni se pierda entre páginas.
+     */
+    public Page<Transaction> search(TransactionFilter filter, int page, int limit) {
+        Sort newestFirst = Sort.by(Sort.Order.desc("createdAt"), Sort.Order.desc("id"));
+        return repository.findAll(filter.toSpecification(), PageRequest.of(page, limit, newestFirst));
     }
 
     private Optional<Transaction> findPrevious(ExecuteTransactionCommand command) {
