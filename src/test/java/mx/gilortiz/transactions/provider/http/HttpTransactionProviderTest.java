@@ -123,6 +123,17 @@ public class HttpTransactionProviderTest {
     }
 
     @Test
+    @DisplayName("sin conexión se reintenta 3 veces antes de quedar FAILED")
+    void connectionRefusedIsRetried() throws IOException {
+        CircuitBreaker circuitBreaker = config.providerCircuitBreaker();
+
+        provider(URI.create("http://localhost:" + freePort()), circuitBreaker).execute(debit());
+
+        // El retry envuelve al circuit breaker: cada intento queda registrado como falla.
+        assertThat(circuitBreaker.getMetrics().getNumberOfFailedCalls()).isEqualTo(3);
+    }
+
+    @Test
     @DisplayName("con el circuito abierto no se llama al proveedor")
     void openCircuitSkipsCall() {
         CircuitBreaker circuitBreaker = config.providerCircuitBreaker();

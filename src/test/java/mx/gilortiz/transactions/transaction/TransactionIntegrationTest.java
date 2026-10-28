@@ -221,6 +221,16 @@ public class TransactionIntegrationTest {
                 .andExpect(jsonPath("$.totalPages").value(2));
     }
 
+    @Test
+    @DisplayName("el contrato OpenAPI expone ambos endpoints y el header Idempotency-Key")
+    void openApiDescribesEndpoints() throws Exception {
+        mockMvc.perform(get("/v3/api-docs"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.paths['/transactions'].post").exists())
+                .andExpect(jsonPath("$.paths['/transactions'].get").exists())
+                .andExpect(jsonPath("$.paths['/transactions'].post.parameters[?(@.name == 'Idempotency-Key')]").exists());
+    }
+
     private ResultActions postTransaction(String body, String idempotencyKey) throws Exception {
         MockHttpServletRequestBuilder request = post("/transactions")
                 .contentType(MediaType.APPLICATION_JSON)
