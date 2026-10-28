@@ -21,7 +21,7 @@ El reto valora la separación de capas, la inversión de dependencias, el desaco
 
 ## Consecuencias
 
-- `transaction/` no depende de ningún otro paquete; `provider/http/` depende de `transaction/`. No hay ciclos.
+- `provider/http/` depende de `transaction/`, nunca al revés. `common/web/` comparte el formato de paginación y traduce las excepciones de `transaction/` a HTTP; con una sola funcionalidad se acepta esa dependencia mutua en lugar de agregar una jerarquía de excepciones.
 - El servicio se prueba con un mock de `TransactionProvider` y el cliente HTTP se prueba aislado con WireMock.
 - Cambiar de protocolo (gRPC, mensajería) solo requiere otra implementación de `TransactionProvider`.
 - La entidad JPA cruza hacia el adaptador HTTP en modo lectura. Es un acoplamiento aceptado a cambio de no duplicar el modelo.

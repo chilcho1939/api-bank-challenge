@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import mx.gilortiz.transactions.common.web.PageResponse;
+import mx.gilortiz.transactions.transaction.dto.CreateTransactionRequest;
 import mx.gilortiz.transactions.transaction.dto.TransactionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;

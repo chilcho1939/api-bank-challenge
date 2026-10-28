@@ -19,6 +19,8 @@ docker compose ps        # esperar a que "app" esté healthy (~20 s)
 |---|---|
 | API | http://localhost:8080 |
 | Health | http://localhost:8080/actuator/health |
+| Swagger UI | http://localhost:8080/swagger-ui.html |
+| OpenAPI (JSON) | http://localhost:8080/v3/api-docs |
 | Proveedor simulado (WireMock) | http://localhost:8089 |
 | PostgreSQL | localhost:5432 (usuario, contraseña y BD: `transactions`) |
 
@@ -254,13 +256,10 @@ Una base en memoria no sobrevive a reinicios, y una documental no ofrece constra
 
 ## Uso de IA
 
-<!-- Ajusta esta sección con tus palabras: debe describir exactamente cómo trabajaste. -->
-
 Usé **Claude (Anthropic)** como asistente durante todo el reto, en modalidad de *pair programming*:
 
 - **Diseño:** discutí con Claude el enfoque antes de escribir código (arquitectura, modelo de estados, estrategia de reintentos, idempotencia). Las decisiones finales fueron mías; por ejemplo, elegí capas clásicas en lugar de hexagonal, Maven, incluir `Idempotency-Key`, mensajes en español con códigos en inglés y el nombre de los paquetes.
 - **Código:** Claude propuso el código paso a paso; lo escribí manualmente archivo por archivo, lo revisé y lo ajusté hasta entender cada línea.
 - **Depuración:** resolví con su ayuda problemas de configuración (importación de Maven en el IDE, validación de esquema de Flyway e Hibernate) y errores que detectaron los tests (beans sin anotar).
-- **Documentación:** Claude redactó el borrador de este README y de los ADRs; los revisé y adapté.
+- **Documentación:** Claude redactó el borrador de este README y de los ADRs; los revisé y adapté, así como la configuración de Open API.
 
-Puedo explicar cada decisión y cada línea del código entregado.

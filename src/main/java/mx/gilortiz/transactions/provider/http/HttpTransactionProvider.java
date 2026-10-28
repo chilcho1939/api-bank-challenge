@@ -48,11 +48,11 @@ public class HttpTransactionProvider implements TransactionProvider {
 
     @Override
     public ProviderResult execute(Transaction transaction) {
-        // El retry envuelve al circuit breaker: cada intento cuenta en las métricas del circuito.
+        // El retry envuelve al circuit breaker: cada intento cuenta en las métricas del circuito. Call es la llamada real.
         Supplier<ProviderResult> guardedCall = Retry.decorateSupplier(retry,
                 CircuitBreaker.decorateSupplier(circuitBreaker, () -> call(transaction)));
         try {
-            return guardedCall.get();
+            return guardedCall.get();//Dispara la cadena
         } catch (CallNotPermittedException e) {
             log.warn("Circuito abierto: la transacción {} no se envió al proveedor", transaction.getId());
             return new ProviderResult.Failed("PROVIDER_CIRCUIT_OPEN",
